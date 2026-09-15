@@ -102,11 +102,44 @@ import QCSDK
         case "getThumbnail":
             handleGetThumbnail(result: result)
         case "setVolume":
-            result(true)
+            handleSetVolume(volDouble: args?["volume"] as? Double ?? 0.8, result: result)
         case "requestPermissions":
             result(true) // iOS permissions are handled declaratively via Info.plist
         default:
             result(FlutterMethodNotImplemented)
+        }
+    }
+    
+    private func handleSetVolume(volDouble: Double, result: @escaping FlutterResult) {
+        QCSDKCmdCreator.getVolumeWithFinished { success, error, volumeInfo in
+            if success, let info = volumeInfo as? QCVolumeInfoModel {
+                let musicRange = Float(info.musicMax - info.musicMin)
+                info.musicCurrent = info.musicMin + Int(Float(volDouble) * musicRange)
+                let callRange = Float(info.callMax - info.callMin)
+                info.callCurrent = info.callMin + Int(Float(volDouble) * callRange)
+                let sysRange = Float(info.systemMax - info.systemMin)
+                info.systemCurrent = info.systemMin + Int(Float(volDouble) * sysRange)
+                
+                QCSDKCmdCreator.setVolume(info) { setSuccess, _, _ in
+                    result(setSuccess)
+                }
+            } else {
+                let info = QCVolumeInfoModel()
+                info.mode = .music
+                info.musicMin = 0
+                info.musicMax = 15
+                info.musicCurrent = Int(volDouble * 15.0)
+                info.callMin = 0
+                info.callMax = 15
+                info.callCurrent = Int(volDouble * 15.0)
+                info.systemMin = 0
+                info.systemMax = 15
+                info.systemCurrent = Int(volDouble * 15.0)
+                
+                QCSDKCmdCreator.setVolume(info) { setSuccess, _, _ in
+                    result(setSuccess)
+                }
+            }
         }
     }
     

@@ -1915,20 +1915,52 @@ class MainActivity : FlutterActivity() {
 
     private fun handleSetVolume(volDouble: Double, result: MethodChannel.Result) {
         try {
+            // 1. Phone system stream volume (Bluetooth A2DP/SCO)
             val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
             val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
             val targetVolume = (volDouble * maxVolume).toInt().coerceIn(0, maxVolume)
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVolume, AudioManager.FLAG_SHOW_UI)
 
             try {
-                LargeDataHandler.getInstance().setVolumeControl(
-                    0, maxVolume, targetVolume,
-                    0, maxVolume, targetVolume,
-                    0, maxVolume, targetVolume,
-                    1
-                )
+                val maxCallVol = audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL)
+                val targetCallVol = (volDouble * maxCallVol).toInt().coerceIn(0, maxCallVol)
+                audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, targetCallVol, 0)
+            } catch (_: Exception) {}
+
+            // 2. Query glasses BLE volume range and send hardware setVolumeControl packet
+            try {
+                LargeDataHandler.getInstance().getVolumeControl { _, response ->
+                    if (response != null && response.maxVolumeMusic > 0) {
+                        val minM = response.minVolumeMusic
+                        val maxM = response.maxVolumeMusic
+                        val currM = (minM + volDouble * (maxM - minM)).toInt().coerceIn(minM, maxM)
+
+                        val minC = response.minVolumeCall
+                        val maxC = response.maxVolumeCall
+                        val currC = (minC + volDouble * (maxC - minC)).toInt().coerceIn(minC, maxC)
+
+                        val minS = response.minVolumeSystem
+                        val maxS = response.maxVolumeSystem
+                        val currS = (minS + volDouble * (maxS - minS)).toInt().coerceIn(minS, maxS)
+
+                        LargeDataHandler.getInstance().setVolumeControl(
+                            minM, maxM, currM,
+                            minC, maxC, currC,
+                            minS, maxS, currS,
+                            1
+                        )
+                    } else {
+                        val bleTarget = (volDouble * 15).toInt().coerceIn(0, 15)
+                        LargeDataHandler.getInstance().setVolumeControl(
+                            0, 15, bleTarget,
+                            0, 15, bleTarget,
+                            0, 15, bleTarget,
+                            1
+                        )
+                    }
+                }
             } catch (e: Exception) {
-                Log.w(TAG, "Ble volume command skipped: ${e.message}")
+                Log.w(TAG, "Ble volume command failed: ${e.message}")
             }
             result.success(true)
         } catch (e: Exception) {
