@@ -101,6 +101,8 @@ import QCSDK
             handleConvertOpusToMp3(filePath: args?["filePath"] as? String ?? "", result: result)
         case "getThumbnail":
             handleGetThumbnail(result: result)
+        case "setVolume":
+            result(true)
         case "requestPermissions":
             result(true) // iOS permissions are handled declaratively via Info.plist
         default:

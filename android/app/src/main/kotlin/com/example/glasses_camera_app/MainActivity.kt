@@ -15,6 +15,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.wifi.WifiNetworkSpecifier
 import android.net.wifi.p2p.WifiP2pManager
+import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -235,6 +236,7 @@ class MainActivity : FlutterActivity() {
                     "stopAudio" -> handleStopPlaybackAudio(result)
                     "seekAudio" -> handleSeekAudio(call.argument<Int>("positionMs") ?: 0, result)
                     "getAudioProgress" -> handleGetAudioProgress(result)
+                    "setVolume" -> handleSetVolume(call.argument<Double>("volume") ?: 0.8, result)
                     else -> result.notImplemented()
                 }
             }
@@ -1908,6 +1910,30 @@ class MainActivity : FlutterActivity() {
             result.success(true)
         } catch (e: Exception) {
             result.error("OPEN_LOCATION_SETTINGS_FAILED", e.message, null)
+        }
+    }
+
+    private fun handleSetVolume(volDouble: Double, result: MethodChannel.Result) {
+        try {
+            val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+            val targetVolume = (volDouble * maxVolume).toInt().coerceIn(0, maxVolume)
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, targetVolume, AudioManager.FLAG_SHOW_UI)
+
+            try {
+                LargeDataHandler.getInstance().setVolumeControl(
+                    0, maxVolume, targetVolume,
+                    0, maxVolume, targetVolume,
+                    0, maxVolume, targetVolume,
+                    1
+                )
+            } catch (e: Exception) {
+                Log.w(TAG, "Ble volume command skipped: ${e.message}")
+            }
+            result.success(true)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to set volume: ${e.message}")
+            result.error("SET_VOLUME_FAILED", e.message, null)
         }
     }
 
