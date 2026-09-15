@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.1.2" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.2)" variant="all" version="7.1.2">
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                boolean discoverServices = gatt.discoverServices();"
+        errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="205"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                    boolean discoverServices1 = gatt.discoverServices();"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="211"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                        gatt.disconnect();"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="249"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="            if (mBluetoothAdapter.isDiscovering()) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="830"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                mBluetoothAdapter.cancelDiscovery();"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="831"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="            return mBluetoothAdapter.startDiscovery();"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="835"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        Set&lt;BluetoothDevice> devices1 = adapter.getBondedDevices();"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="939"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                if (bluetoothDevice == null || bluetoothDevice.getName() == null || bluetoothDevice.getAddress() == null) {"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="943"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                Log.i(TAG,&quot;-----配对状态:&quot; + bleConnectDevice.getBondState());"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="960"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                if (bleConnectDevice.getBondState() == BOND_NONE &amp;&amp; device == null) {"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="961"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                    bleConnectDevice.createBond();"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="962"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        Set&lt;BluetoothDevice> devices1 = adapter.getBondedDevices();"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleOperateManager.java"
+            line="526"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                if(bluetoothDevice==null || bluetoothDevice.getName()==null || bluetoothDevice.getAddress()==null){"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleOperateManager.java"
+            line="530"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                    Set&lt;BluetoothDevice> devices1 = adapter.getBondedDevices();"
+        errorLine2="                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="126"
+            column="53"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                            if (bluetoothDevice == null || bluetoothDevice.getName() == null || bluetoothDevice.getAddress() == null) {"
+        errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="129"
+            column="60"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        Set&lt;BluetoothDevice> devices1 = adapter.getBondedDevices();"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="180"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                 Log.i(TAG,bluetoothDevice.getName());"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="184"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                if(bluetoothDevice==null || bluetoothDevice.getName()==null || bluetoothDevice.getAddress()==null){"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="186"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        Set&lt;BluetoothDevice> devices1 = adapter.getBondedDevices();"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="201"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                if(bluetoothDevice==null || bluetoothDevice.getName()==null || bluetoothDevice.getAddress()==null){"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="205"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        Set&lt;BluetoothDevice> devices1 = adapter.getBondedDevices();"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="222"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="                if(bluetoothDevice==null || bluetoothDevice.getName()==null || bluetoothDevice.getAddress()==null){"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="226"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        Set&lt;BluetoothDevice> devices1 = adapter.getBondedDevices();"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerHelper.java"
+            line="241"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        bluetoothAdapter.startLeScan(leScanCallback);"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BluetoothScannerImplJB.java"
+            line="13"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        bluetoothAdapter.stopLeScan(leScanCallback);"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BluetoothScannerImplJB.java"
+            line="20"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        boolean b = bluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, isEnable);"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/request/EnableNotifyRequest.java"
+            line="41"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        boolean flag=bluetoothGatt.writeDescriptor(descriptor);"
+        errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/request/EnableNotifyRequest.java"
+            line="59"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="            DeviceManager.getInstance().setDeviceName(device.getName());"
+        errorLine2="                                                      ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/QCBluetoothCallbackReceiver.java"
+            line="52"
+            column="55"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        return bluetoothGatt.readCharacteristic(bluetoothGattCharacteristic);"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/request/ReadRequest.java"
+            line="22"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="        return bluetoothGatt.readRemoteRssi();"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/request/ReadRssiRequest.java"
+            line="24"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="MissingPermission"
+        message="Call requires permission which may be rejected by user: code should explicitly check to see if permission is available (with `checkPermission`) or explicitly handle a potential `SecurityException`"
+        errorLine1="            boolean result=setValue &amp;&amp; bluetoothGatt.writeCharacteristic(bluetoothGattCharacteristic);"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/request/WriteRequest.java"
+            line="49"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="AnnotateVersionCheck"
+        message="This method should be annotated with `@ChecksSdkIntAtLeast(api=Build.VERSION_CODES.LOLLIPOP)`"
+        errorLine1="    public static boolean hasLollipop() {"
+        errorLine2="                          ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/bluetooth/BluetoothUtils.java"
+            line="35"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toLowerCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="  String hexString = hexStrings.toLowerCase();"
+        errorLine2="                                ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/communication/utils/ByteUtil.java"
+            line="369"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toUpperCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="            String i = Integer.toHexString(b &amp; 0xff).toUpperCase();"
+        errorLine2="                                                     ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/communication/bigData/resp/ClassBluetoothResponse.java"
+            line="40"
+            column="54"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toUpperCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="            language = Locale.getDefault().getLanguage() + &quot;_&quot; + Locale.getDefault().getCountry().toUpperCase();"
+        errorLine2="                                                                                                  ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/communication/req/SetTimeReq.java"
+            line="100"
+            column="99"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toUpperCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="            language = Locale.getDefault().getLanguage() + &quot;_&quot; + Locale.getDefault().getCountry().toUpperCase();"
+        errorLine2="                                                                                                  ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/communication/bigData/bean/SyncTime.java"
+            line="86"
+            column="99"/>
+    </issue>
+
+    <issue
+        id="OldTargetApi"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
+        errorLine1="        targetSdkVersion 34"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="7"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd-HH-mm&quot;);"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/date/DateUtil.java"
+            line="182"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="    public static SimpleDateFormat yyyyMMdd_HHmmssF = new SimpleDateFormat(yyyyMMdd_HHmmss);"
+        errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/date/DateUtil.java"
+            line="664"
+            column="55"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="    public static SimpleDateFormat dFyyyyMMddF = new SimpleDateFormat(dFyyyyMMdd1);"
+        errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/date/DateUtil.java"
+            line="665"
+            column="50"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="    public static SimpleDateFormat dFyyyyMMddmmF = new SimpleDateFormat(yyyyMMdd_HHmm);"
+        errorLine2="                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/date/DateUtil.java"
+            line="666"
+            column="52"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="        SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyyMMdd&quot;);"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/date/DateUtil.java"
+            line="844"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyyMMdd&quot;);"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/date/DateUtil.java"
+            line="975"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="SimpleDateFormat"
+        message="To get local formatting use `getDateInstance()`, `getDateTimeInstance()`, or `getTimeInstance()`, or use `new SimpleDateFormat(String template, Locale locale)` with for example `Locale.US` for ASCII dates."
+        errorLine1="            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/date/DateUtil.java"
+            line="988"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core than 1.13.0 is available: 1.16.0"
+        errorLine1="    implementation &apos;androidx.core:core:1.13.0&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="28"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is never &lt; 23"
+        errorLine1="            }else if(Build.VERSION.SDK_INT==22 ||Build.VERSION.SDK_INT==21 ){"
+        errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/communication/req/BindAncsReq.java"
+            line="37"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is never &lt; 23"
+        errorLine1="            }else if(Build.VERSION.SDK_INT==22 ||Build.VERSION.SDK_INT==21 ){"
+        errorLine2="                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/communication/req/BindAncsReq.java"
+            line="37"
+            column="50"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="            if (Build.VERSION.SDK_INT >= 20) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="911"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/scan/BleScannerCompat.java"
+            line="22"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/qc_utils/bluetooth/BluetoothUtils.java"
+            line="36"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="StaticFieldLeak"
+        message="Do not place Android context classes in static fields (static reference to `BleBaseControl` which has field `mContext` pointing to `Context`); this is a memory leak"
+        errorLine1="    private static BleBaseControl bleBaseControl;"
+        errorLine2="            ~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleBaseControl.java"
+            line="53"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="StaticFieldLeak"
+        message="Do not place Android context classes in static fields (static reference to `BleOperateManager` which has field `mContext` pointing to `Context`); this is a memory leak"
+        errorLine1="    private static BleOperateManager DeviceOperateManager = null;"
+        errorLine2="            ~~~~~~">
+        <location
+            file="src/main/java/com/oudmon/ble/base/bluetooth/BleOperateManager.java"
+            line="41"
+            column="13"/>
+    </issue>
+
+</issues>

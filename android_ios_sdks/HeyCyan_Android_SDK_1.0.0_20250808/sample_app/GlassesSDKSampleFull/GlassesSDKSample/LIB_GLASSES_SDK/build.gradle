@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+android {
+    namespace 'com.glasses.sdk'
+    compileSdk 34
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 34
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.github.amitshekhariitbhu.Fast-Android-Networking:android-networking:1.0.4'
+}
+
+task makeJar(type: Copy) {
+    //删除存在的
+    delete 'build/outputs/future_glasses_sdk.jar'
+    //jar文件来源
+    from('build/intermediates/aar_main_jar/release')
+//    from(project.zipTree('libs/java-compress-0.1-alpha.jar'))
+    from (project.zipTree('build/intermediates/runtime_library_classes_jar/release/classes.jar'))
+    //打进jar包后的文件目录
+    into('build/libs/')
+    //将classes.jar放入build/libs/目录下
+    //include ,exclude参数来设置过滤
+    //（我们只关心classes.jar这个文件
+
+    include('classes.jar')
+    //重命名
+    rename ('classes.jar', 'future_glasses_sdk.jar')
+}
+makeJar.dependsOn(build)
