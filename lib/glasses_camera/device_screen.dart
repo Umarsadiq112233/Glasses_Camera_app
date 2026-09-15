@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'glasses_camera_service.dart';
 import 'models.dart';
-import 'permission_dialog_helper.dart';
+import 'onboarding_pairing_screen.dart';
 import 'theme/app_theme.dart';
-import 'widgets/empty_state_card.dart';
 import 'widgets/glass_device_card.dart';
+import 'widgets/volume_control_card.dart';
 
 class DeviceScreen extends StatefulWidget {
   final GlassesCameraService service;
@@ -19,24 +19,16 @@ class DeviceScreen extends StatefulWidget {
 }
 
 class _DeviceScreenState extends State<DeviceScreen> {
-  List<GlassesDevice> _discoveredDevices = [];
-  String? _connectingIdentifier;
   GlassesBatteryInfo? _batteryInfo;
   GlassesVersionInfo? _versionInfo;
   GlassesMediaInfo? _mediaInfo;
 
-  StreamSubscription? _scanSub;
   StreamSubscription? _connSub;
-  StreamSubscription? _btSub;
   StreamSubscription? _eventsSub;
 
   @override
   void initState() {
     super.initState();
-
-    _scanSub = widget.service.scanResultsStream.listen((devices) {
-      if (mounted) setState(() => _discoveredDevices = devices);
-    });
 
     _connSub = widget.service.connectionStateStream.listen((state) {
       if (mounted) {
@@ -45,10 +37,6 @@ class _DeviceScreenState extends State<DeviceScreen> {
           _loadDeviceInfo();
         }
       }
-    });
-
-    _btSub = widget.service.bluetoothStateStream.listen((_) {
-      if (mounted) setState(() {});
     });
 
     _eventsSub = widget.service.eventsStream.listen((event) {
@@ -79,9 +67,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
 
   @override
   void dispose() {
-    _scanSub?.cancel();
     _connSub?.cancel();
-    _btSub?.cancel();
     _eventsSub?.cancel();
     super.dispose();
   }
@@ -90,11 +76,14 @@ class _DeviceScreenState extends State<DeviceScreen> {
     try {
       final bat = await widget.service.getBatteryInfo().timeout(
         const Duration(seconds: 3),
-        onTimeout: () => _batteryInfo ?? const GlassesBatteryInfo(level: 0, isCharging: false),
+        onTimeout: () =>
+            _batteryInfo ??
+            const GlassesBatteryInfo(level: 0, isCharging: false),
       );
       final ver = await widget.service.getVersionInfo().timeout(
         const Duration(seconds: 3),
-        onTimeout: () => _versionInfo ?? const GlassesVersionInfo(firmwareVersion: 'v1.0.0'),
+        onTimeout: () =>
+            _versionInfo ?? const GlassesVersionInfo(firmwareVersion: 'v1.0.0'),
       );
       final med = await widget.service.getMediaInfo().timeout(
         const Duration(seconds: 3),
@@ -114,209 +103,133 @@ class _DeviceScreenState extends State<DeviceScreen> {
     } catch (_) {}
   }
 
-  Future<void> _handleStartDiscovery() async {
-    final granted = await widget.service.requestPermissions();
-    if (!granted) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Permissions required to scan glasses'),
-            backgroundColor: AppColors.connecting,
-          ),
-        );
-      }
-      return;
-    }
-
-    if (!widget.service.bluetoothState.isPoweredOn) {
-      final enabled = await widget.service.requestEnableBluetooth();
-      if (!enabled) return;
-    }
-
-    final locEnabled = await widget.service.isLocationServiceEnabled();
-    if (!locEnabled && mounted) {
-      final allow = await PermissionDialogHelper.showLocationServiceDialog(
-        context,
-      );
-      if (allow) {
-        await widget.service.openLocationSettings();
-      }
-      return;
-    }
-
-    setState(() => _discoveredDevices.clear());
-    await widget.service.startScan(timeoutSeconds: 15);
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = widget.service.connectionState;
+    final isConnected = state == GlassesConnectionState.connected;
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GlassDeviceCard(
-                    connectionState: state,
-                    deviceIdentifier: widget.service.lastConnectedIdentifier,
-                    batteryInfo: _batteryInfo,
-                    versionInfo: _versionInfo,
-                    mediaInfo: _mediaInfo,
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Discovered Glasses',
-                        style: AppTypography.h2,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Primary Device Card
+            GlassDeviceCard(
+              connectionState: state,
+              deviceIdentifier: widget.service.lastConnectedIdentifier,
+              batteryInfo: _batteryInfo,
+              versionInfo: _versionInfo,
+              mediaInfo: _mediaInfo,
+            ),
+            const SizedBox(height: 20),
+
+            // Disconnected CTA Card -> Navigates to Onboarding Radar Scanner
+            if (!isConnected) ...[
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: AppRadii.borderRadius24,
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: const BoxDecoration(
+                        color: AppColors.primaryGlow,
+                        shape: BoxShape.circle,
                       ),
-                      ElevatedButton.icon(
-                        onPressed: state.isScanning
-                            ? () => widget.service.stopScan()
-                            : _handleStartDiscovery,
-                        icon: Icon(
-                          state.isScanning ? Icons.stop : Icons.radar,
-                          size: 18,
+                      child: const Icon(
+                        Icons.bluetooth_searching,
+                        color: AppColors.primary,
+                        size: 36,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No Glasses Connected',
+                      style: AppTypography.h2.copyWith(fontSize: 18),
+                    ),
+                    const SizedBox(height: 6),
+                    const Text(
+                      'Connect your Smart Glasses via Bluetooth to enable camera controls, video recording, and media sync.',
+                      style: AppTypography.body2,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () => OnboardingPairingScreen.start(
+                          context,
+                          widget.service,
                         ),
-                        label: Text(state.isScanning ? 'Stop' : 'Scan Glasses'),
+                        icon: const Icon(Icons.radar, size: 20),
+                        label: const Text('Connect Glasses'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: state.isScanning
-                              ? AppColors.error
-                              : AppColors.primary,
+                          backgroundColor: AppColors.primary,
                           foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: AppRadii.borderRadius20,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          if (_discoveredDevices.isEmpty)
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: EmptyStateCard(
-                icon: state.isScanning
-                    ? Icons.bluetooth_searching
-                    : Icons.devices_other,
-                title: state.isScanning
-                    ? 'Searching for nearby Smart Glasses...'
-                    : 'No Glasses Discovered',
-                message: state.isScanning
-                    ? 'Ensure your glasses are turned on, powered, and in pairing mode.'
-                    : 'Tap "Scan Glasses" above to discover nearby hardware devices.',
-              ),
-            )
-          else
-            SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                final dev = _discoveredDevices[index];
-                final isThisConnected =
-                    state == GlassesConnectionState.connected &&
-                    widget.service.lastConnectedIdentifier == dev.identifier;
-                final isThisConnecting =
-                    state.isConnecting &&
-                    (widget.service.lastConnectedIdentifier == dev.identifier ||
-                        _connectingIdentifier == dev.identifier);
+            ] else ...[
+              // Connected -> Sound / Volume Control Card
+              VolumeControlCard(service: widget.service),
 
-                return Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.surface,
-                    borderRadius: AppRadii.borderRadius16,
-                    border: Border.all(
-                      color: isThisConnected
-                          ? AppColors.connected
-                          : (isThisConnecting
-                                ? AppColors.connecting
-                                : AppColors.border),
-                      width: (isThisConnected || isThisConnecting) ? 1.5 : 1,
-                    ),
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    borderRadius: AppRadii.borderRadius16,
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      leading: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                          color: AppColors.primaryGlow,
-                          shape: BoxShape.circle,
+              const SizedBox(height: 20),
+
+              // Action Options Card
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: AppRadii.borderRadius20,
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Pairing Options', style: AppTypography.h3),
+                        Text(
+                          'Scan for another pair of glasses',
+                          style: AppTypography.caption,
                         ),
-                        child: const Icon(
-                          Icons.remove_red_eye,
-                          color: AppColors.primary,
-                          size: 20,
+                      ],
+                    ),
+                    OutlinedButton.icon(
+                      onPressed: () => OnboardingPairingScreen.start(
+                        context,
+                        widget.service,
+                      ),
+                      icon: const Icon(Icons.radar, size: 16),
+                      label: const Text('Pair Device'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.primary,
+                        side: const BorderSide(color: AppColors.primary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: AppRadii.borderRadius16,
                         ),
                       ),
-                      title: Text(
-                        dev.name,
-                        style: AppTypography.h3.copyWith(fontSize: 15),
-                      ),
-                      subtitle: Text(
-                        'ID: ${dev.identifier} • Signal: ${dev.rssi} dBm',
-                        style: AppTypography.caption,
-                      ),
-                      trailing: isThisConnected
-                          ? OutlinedButton(
-                              onPressed: () => widget.service.disconnect(),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.error,
-                                side: const BorderSide(color: AppColors.error),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: AppRadii.borderRadius16,
-                                ),
-                              ),
-                              child: const Text('Disconnect'),
-                            )
-                          : ElevatedButton(
-                              onPressed: state.isConnecting
-                                  ? null
-                                  : () {
-                                      setState(
-                                        () => _connectingIdentifier =
-                                            dev.identifier,
-                                      );
-                                      widget.service.connect(dev.identifier);
-                                    },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: isThisConnecting
-                                    ? AppColors.connecting
-                                    : AppColors.primary,
-                                foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: AppRadii.borderRadius16,
-                                ),
-                              ),
-                              child: Text(
-                                isThisConnecting ? 'Connecting...' : 'Connect',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
                     ),
-                  ),
-                );
-              }, childCount: _discoveredDevices.length),
-            ),
-        ],
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

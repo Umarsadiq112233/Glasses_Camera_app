@@ -63,6 +63,10 @@ class GlassesCameraService {
       StreamController<MediaDownloadProgress>.broadcast();
   final _logController = StreamController<String>.broadcast();
 
+  // Volume State
+  double _volume = 0.8;
+  final _volumeController = StreamController<double>.broadcast();
+
   StreamSubscription? _connectionSub;
   StreamSubscription? _bluetoothSub;
   StreamSubscription? _scanSub;
@@ -77,6 +81,7 @@ class GlassesCameraService {
   bool get isConnected => _connectionState == GlassesConnectionState.connected;
   String? get lastConnectedIdentifier => _lastConnectedIdentifier;
   bool get autoReconnectEnabled => _autoReconnectEnabled;
+  double get volume => _volume;
 
   // ─── Streams ───
 
@@ -93,6 +98,53 @@ class GlassesCameraService {
   Stream<MediaDownloadProgress> get downloadProgressStream =>
       _downloadProgressController.stream;
   Stream<String> get logStream => _logController.stream;
+  Stream<double> get volumeStream => _volumeController.stream;
+
+  // ─── Volume Control ───
+
+  Future<void> setVolume(double level) async {
+    _volume = level.clamp(0.0, 1.0);
+    _volumeController.add(_volume);
+    try {
+      await _method.invokeMethod('setVolume', {'volume': _volume});
+    } catch (_) {}
+  }
+
+  Future<void> increaseVolume() async {
+    await setVolume((_volume + 0.1).clamp(0.0, 1.0));
+  }
+
+  Future<void> decreaseVolume() async {
+    await setVolume((_volume - 0.1).clamp(0.0, 1.0));
+  }
+
+  // ─── Device Filtering ───
+
+  bool _isGlassesDevice(GlassesDevice dev) {
+    final name = dev.name.trim().toLowerCase();
+    if (name.isEmpty ||
+        name == 'unknown' ||
+        name == 'null' ||
+        name == 'unknown device') {
+      return false;
+    }
+    if (name.contains('tv') ||
+        name.contains('printer') ||
+        name.contains('band') ||
+        name.contains('watch')) {
+      return false;
+    }
+    return name.contains('w660') ||
+        name.contains('cyan') ||
+        name.contains('qc') ||
+        name.contains('glass') ||
+        name.contains('smart') ||
+        name.contains('frame') ||
+        name.contains('lens') ||
+        name.contains('audio') ||
+        name.contains('camera') ||
+        dev.identifier.toLowerCase().contains('w660');
+  }
 
   // ─── Structured Logging ───
 
@@ -196,8 +248,9 @@ class GlassesCameraService {
     _scanSub = _scanResultsChannel.receiveBroadcastStream().listen((data) {
       final list = (data as List)
           .map((e) => GlassesDevice.fromMap(e as Map))
+          .where((dev) => _isGlassesDevice(dev))
           .toList();
-      logScan('Discovery callback: ${list.length} device(s) found');
+      logScan('Discovery callback: ${list.length} glasses device(s) found');
       _scanResultsController.add(list);
       if (list.isNotEmpty &&
           _connectionState == GlassesConnectionState.scanning) {
