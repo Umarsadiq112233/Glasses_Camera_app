@@ -157,7 +157,7 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
           _localAudio = files.where((f) => f.isAudio).toList();
           _isLoadingLocal = false;
         });
-        _autoPretranscodeVideos();
+        _autoPretranscodeMedia();
       }
     } catch (_) {
       if (mounted) setState(() => _isLoadingLocal = false);
@@ -174,17 +174,25 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
           _localVideos = files.where((f) => f.isVideo).toList();
           _localAudio = files.where((f) => f.isAudio).toList();
         });
-        _autoPretranscodeVideos();
+        _autoPretranscodeMedia();
       }
     } catch (_) {}
   }
 
-  void _autoPretranscodeVideos() {
+  void _autoPretranscodeMedia() {
     for (final video in _localVideos) {
       VideoTranscoder.transcodeVideo(video.path).catchError((e) {
         debugPrint('[Pretranscode] Background transcode skipped/failed: $e');
         return video.path;
       });
+    }
+    for (final audio in _localAudio) {
+      if (audio.path.toLowerCase().endsWith('.opus')) {
+        widget.service.convertOpusToMp3(audio.path).catchError((e) {
+          debugPrint('[Pretranscode] Background opus audio conversion skipped: $e');
+          return audio.path;
+        });
+      }
     }
   }
 
@@ -207,7 +215,15 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen>
     }
 
     try {
-      final res = await widget.service.playAudio(audio.path);
+      String playTarget = audio.path;
+      if (audio.path.toLowerCase().endsWith('.opus') || audio.isAudio) {
+        final converted = await widget.service.convertOpusToMp3(audio.path);
+        if (converted != null && converted.isNotEmpty && File(converted).existsSync()) {
+          playTarget = converted;
+        }
+      }
+
+      final res = await widget.service.playAudio(playTarget);
       final durationMs = (res['durationMs'] as int?) ?? 0;
       setState(() {
         _playingAudioFile = audio;
