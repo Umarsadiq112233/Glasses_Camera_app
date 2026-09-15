@@ -62,8 +62,9 @@ class _ShutterButtonState extends State<ShutterButton> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
-              shape: widget.isRecording ? BoxShape.rectangle : BoxShape.circle,
-              borderRadius: widget.isRecording ? AppRadii.borderRadius12 : null,
+              borderRadius: widget.isRecording
+                  ? AppRadii.borderRadius12
+                  : BorderRadius.circular(40),
               color: enabled
                   ? (widget.isRecording ? AppColors.videoAccent : widget.color)
                   : AppColors.surfaceElevated,
